@@ -15,10 +15,12 @@ import { useRouter } from "next/navigation";
 import Empty from "@/components/empty";
 import Loader from "@/components/loader";
 
+type Music = { userPrompt: string; music: string } | null;
+
 const MusicPage = () => {
   const router = useRouter();
 
-  const [music, setMusic] = useState<string>("");
+  const [music, setMusic] = useState<Music>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,11 +33,14 @@ const MusicPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setMusic("");
+      setMusic(null);
 
       const response = await axios.post("/api/music", values);
 
-      setMusic(response.data.audio);
+      setMusic({
+        userPrompt: values.prompt,
+        music: response.data.audio,
+      });
 
       form.reset();
     } catch (error: any) {
@@ -94,9 +99,14 @@ const MusicPage = () => {
           )}
           {!music && !isLoading && <Empty label="No music generated" />}
           {music && (
-            <audio controls className="w-full mt-8">
-              <source src={music} />
-            </audio>
+            <div className="flex flex-col gap-y-4">
+              <div className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10">
+                <p className="text-sm">{music.userPrompt}</p>
+              </div>
+              <audio controls className="w-full">
+                <source src={music.music} />
+              </audio>
+            </div>
           )}
         </div>
       </div>
