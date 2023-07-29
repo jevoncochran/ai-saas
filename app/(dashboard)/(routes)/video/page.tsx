@@ -15,10 +15,12 @@ import { useRouter } from "next/navigation";
 import Empty from "@/components/empty";
 import Loader from "@/components/loader";
 
+type Video = { userPrompt: string; video: string } | null;
+
 const VideoPage = () => {
   const router = useRouter();
 
-  const [video, setVideo] = useState(null);
+  const [video, setVideo] = useState<Video>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,7 +37,10 @@ const VideoPage = () => {
 
       const response = await axios.post("/api/video", values);
 
-      setVideo(response.data[0]);
+      setVideo({
+        userPrompt: values.prompt,
+        video: response.data[0],
+      });
 
       form.reset();
     } catch (error: any) {
@@ -95,14 +100,14 @@ const VideoPage = () => {
           {!video && !isLoading && <Empty label="No video generated" />}
           {video && (
             <div className="flex flex-col gap-y-4">
-              {/* <div className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10">
-                <p className="text-sm">{music.userPrompt}</p>
-              </div> */}
+              <div className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10">
+                <p className="text-sm">{video.userPrompt}</p>
+              </div>
               <video
-                className="w-full aspect-video mt-8 rounded-lg border bg-black"
+                className="w-full aspect-video rounded-lg border bg-black"
                 controls
               >
-                <source src={video} />
+                <source src={video.video} />
               </video>
             </div>
           )}
