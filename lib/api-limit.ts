@@ -22,3 +22,19 @@ export const incrementGenerationCount = async () => {
     });
   }
 };
+
+export const checkApiLimit = async () => {
+  const { userId } = auth();
+
+  if (!userId) return false;
+
+  const userApiLimit = await prismadb.userApiLimit.findUnique({
+    where: { userId },
+  });
+
+  if (!userApiLimit || userApiLimit.count < FREE_GENERATIONS) {
+    return true;
+  } else {
+    return false;
+  }
+};
