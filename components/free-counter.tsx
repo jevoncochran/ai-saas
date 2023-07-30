@@ -4,6 +4,7 @@ import { FREE_GENERATIONS } from "@/constants";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface FreeCounterProps {
   generationCount: number;
@@ -11,6 +12,8 @@ interface FreeCounterProps {
 
 const FreeCounter = ({ generationCount = 0 }: FreeCounterProps) => {
   const [mounted, setMounted] = useState(false);
+
+  const proModal = useProModal();
 
   useEffect(() => {
     setMounted(true);
@@ -31,7 +34,11 @@ const FreeCounter = ({ generationCount = 0 }: FreeCounterProps) => {
               value={(generationCount / FREE_GENERATIONS) * 100}
             />
           </div>
-          <Button variant="premium" className="w-full">
+          <Button
+            variant="premium"
+            className="w-full"
+            onClick={proModal.onOpen}
+          >
             Upgrade
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
