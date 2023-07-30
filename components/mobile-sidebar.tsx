@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "@/components/sidebar";
 
-const MobileSidebar = () => {
+interface MobileSidebarProps {
+  generationCount: number;
+}
+
+const MobileSidebar = ({ generationCount }: MobileSidebarProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -14,7 +18,7 @@ const MobileSidebar = () => {
   }, []);
 
   if (!isMounted) return null;
-  
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -23,7 +27,7 @@ const MobileSidebar = () => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
-        <Sidebar />
+        <Sidebar generationCount={generationCount} />
       </SheetContent>
     </Sheet>
   );
