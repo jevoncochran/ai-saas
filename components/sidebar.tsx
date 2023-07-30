@@ -14,6 +14,11 @@ import {
   VideoIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import FreeCounter from "@/components/free-counter";
+
+interface SidebarProps {
+  generationCount: number;
+}
 
 const monserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 
@@ -61,7 +66,7 @@ const routes = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ generationCount = 0 }: SidebarProps) => {
   const pathName = usePathname();
 
   return (
@@ -95,6 +100,7 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
+      <FreeCounter generationCount={generationCount} />
     </div>
   );
 };
