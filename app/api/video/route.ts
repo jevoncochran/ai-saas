@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 import { checkApiLimit, incrementGenerationCount } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const replicate = new Replicate({
   // adding the exclamation is for undefined value
@@ -24,6 +25,7 @@ export async function POST(req: Request) {
     }
 
     const freeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
 
     if (!freeTrial) {
       return new NextResponse("Free trial has expired", { status: 403 });
@@ -38,7 +40,9 @@ export async function POST(req: Request) {
       }
     );
 
-    await incrementGenerationCount();
+    if (!isPro) {
+      await incrementGenerationCount();
+    }
 
     return NextResponse.json(response);
   } catch (error) {

@@ -18,6 +18,7 @@ import FreeCounter from "@/components/free-counter";
 
 interface SidebarProps {
   generationCount: number;
+  isPro: boolean;
 }
 
 const monserrat = Montserrat({ weight: "600", subsets: ["latin"] });
@@ -66,7 +67,7 @@ const routes = [
   },
 ];
 
-const Sidebar = ({ generationCount = 0 }: SidebarProps) => {
+const Sidebar = ({ generationCount = 0, isPro = false }: SidebarProps) => {
   const pathName = usePathname();
 
   return (
@@ -100,7 +101,7 @@ const Sidebar = ({ generationCount = 0 }: SidebarProps) => {
           ))}
         </div>
       </div>
-      <FreeCounter generationCount={generationCount} />
+      <FreeCounter generationCount={generationCount} isPro={isPro} />
     </div>
   );
 };

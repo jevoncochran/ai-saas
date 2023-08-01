@@ -8,9 +8,13 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 interface FreeCounterProps {
   generationCount: number;
+  isPro: boolean;
 }
 
-const FreeCounter = ({ generationCount = 0 }: FreeCounterProps) => {
+const FreeCounter = ({
+  generationCount = 0,
+  isPro = false,
+}: FreeCounterProps) => {
   const [mounted, setMounted] = useState(false);
 
   const proModal = useProModal();
@@ -20,6 +24,8 @@ const FreeCounter = ({ generationCount = 0 }: FreeCounterProps) => {
   }, []);
 
   if (!mounted) return null;
+
+  if (isPro) return null;
 
   return (
     <div className="px-3">
