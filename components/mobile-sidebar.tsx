@@ -8,9 +8,13 @@ import Sidebar from "@/components/sidebar";
 
 interface MobileSidebarProps {
   generationCount: number;
+  isPro: boolean;
 }
 
-const MobileSidebar = ({ generationCount }: MobileSidebarProps) => {
+const MobileSidebar = ({
+  generationCount,
+  isPro = false,
+}: MobileSidebarProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -27,7 +31,7 @@ const MobileSidebar = ({ generationCount }: MobileSidebarProps) => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
-        <Sidebar generationCount={generationCount} />
+        <Sidebar generationCount={generationCount} isPro={isPro} />
       </SheetContent>
     </Sheet>
   );
